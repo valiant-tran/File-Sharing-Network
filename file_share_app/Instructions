@@ -1,0 +1,69 @@
+
+Project Assignment: Local Network File-Sharing App
+
+
+1. Objective
+
+Build a Python web application using Flask that allows devices on the same local Wi-Fi/LAN network to upload and download files through a web browser.
+
+2. Prerequisites
+
+Before starting, ensure you have:
+• Python 3.8+ installed on your machine.
+• Flask installed via terminal/command prompt:bash
+pip install flask
+Use code with caution.
+
+3. Required Directory Structure
+
+Create the exact folder and file hierarchy below. File and folder names are case-sensitive and must match verbatim:
+text
+file_share_app/
+├── app.py
+├── shared_files/
+└── templates/
+    └── index.html
+Use code with caution.
+
+4. Functional Requirements
+
+
+A. Backend (app.py)
+
+Your Python script must implement the following behaviors in order:
+1. Initialization: Import os and required Flask utilities (Flask, request, send_from_directory, render_template). Initialize the Flask app instance (app = Flask(__name__)).
+2. Storage Configuration: Define a constant pointing to the 'shared_files' folder. Programmatically ensure this directory exists upon startup (os.makedirs(..., exist_ok=True)).
+3. Home & Upload Endpoint (/):
+	• Must accept both GET and POST HTTP methods.
+	• On POST: Retrieve the uploaded file object from request.files under the key 'file'. Validate that a file was selected and has a non-empty filename, then save it into shared_files/.
+	• On GET and POST: Read the current list of filenames inside shared_files/ and render templates/index.html, passing the file list as a template variable named files.
+4. Download Endpoint (/download/<filename>):
+	• Accept a dynamic <filename> URL parameter.
+	• Return the requested file from shared_files/ as a downloadable attachment (as_attachment=True).
+5. Server Execution:
+	• Inside an if __name__ == '__main__': guard, start the server bound to host '0.0.0.0' and port 5000.
+
+B. Frontend (templates/index.html)
+
+Your HTML template must contain two functional sections:
+1. Upload Form:
+	• A <form> element using method="post" and enctype="multipart/form-data".
+	• One file input (<input type="file" name="file" required>).
+	• One submit button (<input type="submit" value="Upload">).
+2. File Directory List:
+	• A Jinja2 {% for file in files %} loop that generates a list item (<li>) for every filename passed from app.py.
+	• Each item must contain an anchor tag (<a href="/download/{{ file }}">{{ file }}</a>) pointing to the download endpoint.
+
+5. Acceptance Criteria (How to Verify It Works)
+
+Your submission is considered complete when all 5 checks pass:
+1. Running python app.py starts the server on port 5000 with zero errors.
+2. Navigating to http://127.0.0.1:5000 in a browser loads the upload form and file list.
+3. Uploading any file (e.g., .txt, .jpg, .pdf) saves it inside file_share_app/shared_files/ and immediately displays its name in the webpage list.
+4. Clicking a listed filename triggers a browser download of that exact file.
+5. Navigating to http://<HOST-LOCAL-IP>:5000 from a second device on the same Wi-Fi network allows full upload and download functionality.
+
+6. Rules & Constraints
+
+• Allowed Libraries: Python Standard Library + Flask only.
+• Prohibited: External databases (SQLite, PostgreSQL, etc.), JavaScript frameworks, or third-party cloud storage APIs.
